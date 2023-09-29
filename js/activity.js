@@ -1,9 +1,26 @@
 $(document).ready(function() {
-    // Select all td elements except the first one in each row and those with 'Not Available' content
-    $("tbody td:not(:first-child):not(:contains('Not Available'))").addClass("selectable");
+    $("td").click(function() {
+        var content = $(this).text();
 
-    $(".selectable").click(function() {
-        // Toggle the 'selected' class when a selectable cell is clicked
-        $(this).toggleClass("selected");
+        if (content != "Not Available") {
+            $(this).toggleClass("tdhighlight");
+
+            var columnIndex = $(this).index(); 
+            var cliffSite = $("thead th").eq(columnIndex).text(); 
+
+            var displayText = content + " at " + cliffSite; 
+
+            if ($(this).hasClass("tdhighlight")) {
+                $('#displaySelected').css("visibility", "visible");
+                $('#displaySelected').css("margin-top", "2em");
+                $('#result').append("<p>"+ displayText +"</p>");
+            } else {
+                $('#result p:contains(' + displayText + ')').remove();
+                if ($('#result').has('p').length ==false) {
+                    $('#displaySelected').css("visibility", "hidden");
+                    $('#displaySelected').css("margin-top", "2em");
+                }
+            }
+        }
     });
 });
